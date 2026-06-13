@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Grid } from "./Grid";
 import { GameState } from "./logic";
+import { GameStatusText } from "./GameStatusText";
 
 export function App() {
     const [gameState, ] = useState<GameState>(new GameState());
@@ -13,7 +14,7 @@ export function App() {
                 gameState={gameState}
                 onUpdate={() => setUpdateCounter(updateCounter + 1)}
             />
-            <a className="player_move_text">Red's move</a>
+            <GameStatusText gameState={gameState}/>
         </div>
     );
 }

@@ -1,19 +1,25 @@
 import type { CellState, GameState } from "./logic"
 
-function GridCell({ cellState, onClick }: { cellState: CellState, onClick: () => void}) {
-    const backgroundColor = cellState == "red" ? "red" :
-        cellState == "yellow" ? "yellow" :
+function GridCell({
+    cellState,
+    isOnWinningLine,
+    onClick
+}: {
+    cellState: CellState,
+    isOnWinningLine: boolean,
+    onClick: () => void
+}) {
+    const backgroundColor = cellState == "red" ? "var(--red)" :
+        cellState == "yellow" ? "var(--yellow)" :
         undefined;
-    const text = cellState == "red" ? "X" :
-        cellState == "yellow" ? "O" : 
-        "";
+    const className = isOnWinningLine ? "winning_cell" : "grid_cell";
     return (
         <div
-            className="grid_cell"
+            className={className}
             style={{backgroundColor}}
             onClick={() => onClick()}
         >
-            <a className="grid_cell_text">{text}</a>
+            <a className="grid_cell_text"></a>
         </div>
     )
 }
@@ -27,6 +33,7 @@ function GridRow({ row, gameState, onUpdate }: { row: number, gameState: GameSta
             {columns.map(column => (
                 <GridCell
                     cellState={gameState.getCell(row, column)}
+                    isOnWinningLine={gameState.isOnWinningLine(row, column)}
                     onClick={() => {
                         gameState.placePiece(column, gameState.getCurrentPlayer());
                         onUpdate();
@@ -37,13 +44,27 @@ function GridRow({ row, gameState, onUpdate }: { row: number, gameState: GameSta
     )
 }
 
+function ColumnLabels() {
+    const columns = [1, 2, 3, 4, 5, 6, 7];
+    return (
+        <div className="column_labels">
+            {columns.map(column => (
+                <a className="column_label">{column}</a>
+            ))}
+        </div>
+    )
+}
+
 export function Grid({ gameState, onUpdate }: { gameState: GameState, onUpdate: () => void }) {
     const rows = [0, 1, 2, 3, 4, 5];
     return (
-        <div className="grid">
-            {rows.map(row => (
-                <GridRow row={row} gameState={gameState} onUpdate={onUpdate} />
-            ))}
+        <div>
+            <div className="grid">
+                {rows.map(row => (
+                    <GridRow row={row} gameState={gameState} onUpdate={onUpdate} />
+                ))}
+            </div>
+            <ColumnLabels/>
         </div>
     )
 }
