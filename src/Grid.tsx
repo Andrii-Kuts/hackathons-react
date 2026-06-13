@@ -1,48 +1,49 @@
-import { useState } from "react";
+import type { CellState, GameState } from "./logic"
 
-function GridCell() {
-    const [cellState, setCellState] = useState<number>(0);
-    const backgroundColor = cellState == 0 ? undefined :
-        cellState == 1 ? "red" :
-        cellState == 2 ? "blue" : undefined;
-    const text = cellState == 0 ? "" :
-        cellState == 1 ? "X" :
-        cellState == 2 ? "O" : ""
-
+function GridCell({ cellState, onClick }: { cellState: CellState, onClick: () => void}) {
+    const backgroundColor = cellState == "red" ? "red" :
+        cellState == "yellow" ? "yellow" :
+        undefined;
+    const text = cellState == "red" ? "X" :
+        cellState == "yellow" ? "O" : 
+        "";
     return (
         <div
             className="grid_cell"
-            onClick={() => setCellState((cellState + 1) % 3) }
             style={{backgroundColor}}
+            onClick={() => onClick()}
         >
             <a className="grid_cell_text">{text}</a>
         </div>
     )
 }
 
-function GridRow() {
+// Passing entire game state where you don't need it = BAD
+// fix it later
+function GridRow({ row, gameState, onUpdate }: { row: number, gameState: GameState, onUpdate: () => void }) {
+    const columns = [0, 1, 2, 3, 4, 5, 6];
     return (
         <div className="grid_row">
-            <GridCell />
-            <GridCell />
-            <GridCell />
-            <GridCell />
-            <GridCell />
-            <GridCell />
-            <GridCell />
+            {columns.map(column => (
+                <GridCell
+                    cellState={gameState.getCell(row, column)}
+                    onClick={() => {
+                        gameState.placePiece(column, gameState.getCurrentPlayer());
+                        onUpdate();
+                    }}
+                />
+            ))}
         </div>
     )
 }
 
-export function Grid() {
+export function Grid({ gameState, onUpdate }: { gameState: GameState, onUpdate: () => void }) {
+    const rows = [0, 1, 2, 3, 4, 5];
     return (
         <div className="grid">
-            <GridRow />
-            <GridRow />
-            <GridRow />
-            <GridRow />
-            <GridRow />
-            <GridRow />
+            {rows.map(row => (
+                <GridRow row={row} gameState={gameState} onUpdate={onUpdate} />
+            ))}
         </div>
     )
 }
