@@ -1,25 +1,46 @@
-import type { CellState, GameState } from "./logic"
+import type { CSSProperties } from "react";
+import type { GameState, Piece } from "./logic"
 
-function GridCell({
-    cellState,
-    isOnWinningLine,
-    onClick
+function GridPiece({
+    piece,
+    winningLineIndex,
 }: {
-    cellState: CellState,
-    isOnWinningLine: boolean,
-    onClick: () => void
+    piece: Piece,
+    winningLineIndex: number | null,
 }) {
-    const backgroundColor = cellState == "red" ? "var(--red)" :
-        cellState == "yellow" ? "var(--yellow)" :
-        undefined;
-    const className = isOnWinningLine ? "winning_cell" : "grid_cell";
+    const className = "piece piece_drop_in" +
+        (piece.color == "red" ? " piece_red" : " piece_yellow") +
+        (winningLineIndex != null ? " piece_winning" : "");
     return (
         <div
+            key={`${piece.row}:${piece.column}`}
             className={className}
-            style={{backgroundColor}}
-            onClick={() => onClick()}
+            style={{
+               '--index': winningLineIndex != null ? winningLineIndex : undefined
+            } as CSSProperties}
         >
             <a className="grid_cell_text"></a>
+        </div>
+    )
+}
+
+function GridCell({
+    piece,
+    winningLineIndex,
+    onClick
+}: {
+    piece: Piece | null,
+    winningLineIndex: number | null,
+    onClick: () => void
+}) {
+    return (
+        <div
+            className="grid_cell"
+            onClick={() => onClick()}
+        >
+            {piece && (
+                <GridPiece piece={piece} winningLineIndex={winningLineIndex} />
+            )}
         </div>
     )
 }
@@ -32,8 +53,8 @@ function GridRow({ row, gameState, onUpdate }: { row: number, gameState: GameSta
         <div className="grid_row">
             {columns.map(column => (
                 <GridCell
-                    cellState={gameState.getCell(row, column)}
-                    isOnWinningLine={gameState.isOnWinningLine(row, column)}
+                    piece={gameState.getPiece(row, column)}
+                    winningLineIndex={gameState.getWinningLineIndex(row, column)}
                     onClick={() => {
                         gameState.placePiece(column, gameState.getCurrentPlayer());
                         onUpdate();
