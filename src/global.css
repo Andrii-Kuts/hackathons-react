@@ -5,9 +5,9 @@
 
   --blue: #111199;
   --blue-darker: #1f1fc9;
-  --yellow: #d5b70b;
+  --yellow: #c7aa06;
   --yellow-light: #eacc20;
-  --red: #b70808;
+  --red: #ad0707;
   --red-light: #d71d1d;
 }
 
@@ -61,7 +61,7 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  background-color: var(--blue);
+  background-image: linear-gradient(to bottom, var(--blue-darker), var(--blue));
   border-radius: 10px;
   padding: 10px;
 }
@@ -72,8 +72,9 @@
 }
 
 .piece {
-  width: 60px;
-  height: 60px;
+  box-sizing: border-box;
+  width: 70px;
+  height: 70px;
   border-radius: 100px;
   border: 5px solid transparent;
 
@@ -96,23 +97,31 @@
 @keyframes pieceDrop {
   0% {
     transform: translateY(-500px);
-    animation-timing-function: cubic-bezier(.5, .2, .75, .5);
+    animation-timing-function: cubic-bezier(.25, .12, .75, .25);
   }
   40% {
     transform: translateY(0px);
-    animation-timing-function: cubic-bezier(.25, 1, .5, 1);
+    animation-timing-function: cubic-bezier(.25, 1, .75, 1);
   }
   60% {
     transform: translateY(-50px);
-    animation-timing-function: cubic-bezier(.5, 0, .75, 0);
+    animation-timing-function: cubic-bezier(.25, 0, .75, 0);
   }
   80% {
     transform: translateY(0px);
-    animation-timing-function: cubic-bezier(.25, 1, .5, 1);
+    animation-timing-function: cubic-bezier(.25, 1, .75, 1);
   }
-  90% {
+  88% {
     transform: translateY(-10px);
-    animation-timing-function: cubic-bezier(.5, 0, .75, 0);
+    animation-timing-function: cubic-bezier(.25, 0, .75, 0);
+  }
+  95% {
+    transform: translateY(0px);
+    animation-timing-function: cubic-bezier(.25, 1, .75, 1);
+  }
+  97% {
+    transform: translateY(-3px);
+    animation-timing-function: cubic-bezier(.25, 0, .75, 0);
   }
   100% {
     transform: translateY(0px);
@@ -121,20 +130,42 @@
 
 .piece_drop_in {
   animation:
-    pieceDrop 0.4s linear;
+    pieceDrop 0.5s linear;
 }
 
 @keyframes pieceWin {
   0% {
-    transform: scale(1);
+    transform: translateY(0px);
     outline-width: 0px;
+    animation-timing-function: cubic-bezier(.25, 1, .75, 1);
   }
-  30% {
-    transform: scale(1.2);
+  33% {
+    transform: translateY(-50px);
     outline-width: 6px;
+    animation-timing-function: cubic-bezier(.25, 0, .75, 0);
+  }
+  66% {
+    transform: translateY(0px);
+    outline-width: 5px;
+    animation-timing-function: cubic-bezier(.25, 1, .75, 1);
+  }
+  80% {
+    transform: translateY(-10px);
+    outline-width: 5px;
+    animation-timing-function: cubic-bezier(.25, 0, .75, 0);
+  }
+  95% {
+    transform: translateY(0px);
+    outline-width: 5px;
+    animation-timing-function: cubic-bezier(.25, 1, .75, 1);
+  }
+  97% {
+    transform: translateY(-3px);
+    outline-width: 5px;
+    animation-timing-function: cubic-bezier(.25, 0, .75, 0);
   }
   100% {
-    transform: scale(1);
+    transform: translateY(0px);
     outline-width: 5px;
   }
 }
@@ -145,6 +176,6 @@
 
 .piece_drop_in.piece_winning {
   animation:
-    pieceDrop 0.4s linear,
-    pieceWin .3s linear calc(.1s * var(--index, 0) + .2s) forwards;
+    pieceDrop 0.5s linear,
+    pieceWin 0.5s linear calc(.08s * var(--index, 0) + .25s) forwards;
 }
