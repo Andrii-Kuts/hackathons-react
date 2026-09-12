@@ -1,0 +1,67 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.leaderboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.leaderboard__row {
+    height: 50px;
+    background-color: #111111;
+    border-radius: 2px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.leaderboard__header_row {
+    height: 40px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+}
+
+.leaderboard__row__rank {
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.leaderboard__header_row__text {
+    font-size: 16px;
+    color: gray;
+}
+
+.leaderboard__row__username {
+    width: 300px;
+}
+
+.leaderboard__row__wins {
+    width: 80px;
+}
+
+.leaderboard__row__wins__text {
+    color: #49d56e
+}
+
+.leaderboard__row__losses {
+    width: 80px;
+}
+
+.leaderboard__row__losses__text {
+    color: #f96969
+}
+
+.leaderboard__row__win_percentage {
+    width: 60px;
+}

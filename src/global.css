@@ -15,6 +15,40 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: calc(100vw - 30px);
+  margin: 15px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.header__title {
+  margin: 0px auto 0px 0px;
+  font-size: 18px;
+}
+
+.header_button {
+  
+}
+
+.game_page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
 }
 
 .grid_cell_text {
@@ -178,4 +212,12 @@
   animation:
     pieceDrop 0.5s linear,
     pieceWin 0.5s linear calc(.08s * var(--index, 0) + .25s) forwards;
+}
+
+.game-start-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }

@@ -1,6 +1,8 @@
+import { recordGame } from "./rating/rating";
+
 export type PieceColor = "red" | "yellow";
 export type CellState = PieceColor | "empty";
-export type GameStatus = "active" | "yellowWon" | "redWon" | "draw";
+export type GameStatus = "starting" | "active" | "yellowWon" | "redWon" | "draw";
 type WinningLine = {
     cells: {
         row: number,
@@ -24,6 +26,8 @@ export class GameState {
     private currentPlayer: PieceColor;
     private gameStatus: GameStatus;
     private winningLine: WinningLine | null;
+    private redPlayerName: string | null;
+    private yellowPlayerName: string | null;
 
     constructor() {
         this.board = [];
@@ -37,8 +41,30 @@ export class GameState {
             }
         }
         this.currentPlayer = "red";
-        this.gameStatus = "active";
+        this.gameStatus = "starting";
         this.winningLine = null;
+        this.redPlayerName = null;
+        this.yellowPlayerName = null;
+    }
+
+    public startGame(redPlayerName: string, yellowPlayerName: string) {
+        this.redPlayerName = redPlayerName;
+        this.yellowPlayerName = yellowPlayerName;
+        this.pieces = [];
+        for(let row = 0; row < 6; row++) {
+            this.board[row] = [];
+            this.pieces[row] = [];
+            for(let column = 0; column < 7; column++) {
+                this.board[row][column] = "empty";
+                this.pieces[row][column] = null;
+            }
+        }
+        this.currentPlayer = "red";
+        this.gameStatus = "starting";
+        this.winningLine = null;
+        this.redPlayerName = null;
+        this.yellowPlayerName = null;
+        this.gameStatus = "active";
     }
 
     private DX = [0, 1, 1, 1];
@@ -114,7 +140,8 @@ export class GameState {
             const victor = victoryStatus.victor;
             this.gameStatus = victor == "red" ? "redWon" : "yellowWon";
             this.winningLine = victoryStatus.winningLine;
-            console.log(this.winningLine);
+            const outcome = victor == "red" ? 0 : 1;
+            recordGame(this.redPlayerName!, this.yellowPlayerName!, outcome);
             return;
         }
         const isDraw = this.checkDraw();
@@ -167,5 +194,13 @@ export class GameState {
 
     getPiece(row: number, column: number): Piece | null {
         return this.pieces[row][column];
+    }
+
+    getRedPlayerName() {
+        return this.redPlayerName;
+    }
+
+    getYellowPlayerName() {
+        return this.yellowPlayerName;
     }
  };

@@ -6,18 +6,18 @@ export function GameStatusText({ gameState }: { gameState: GameState }) {
     let text;
     let color;
     if(gameStatus == "redWon") {
-        text = "Red Won!";
+        text = `${gameState.getRedPlayerName()} Won!`;
         color = "var(--red)";
     } else if(gameStatus == "yellowWon") {
-        text = "Yellow Won!";
+        text = `${gameState.getYellowPlayerName()} Won!`;
         color = "var(--yellow)";
     } else if(gameStatus == "draw") {
         text = "Draw";
     } else if(gameState.getCurrentPlayer() == 'red') {
-        text = "Red to Move";
+        text = `${gameState.getRedPlayerName()} to Move`;
         color = "var(--red)";
     } else {
-        text = "Yellow to Move";
+        text = `${gameState.getYellowPlayerName()} to Move`;
         color = "var(--yellow)";
     }
 
