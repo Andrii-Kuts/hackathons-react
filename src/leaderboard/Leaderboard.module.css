@@ -54,6 +54,14 @@
     color: #49d56e
 }
 
+.leaderboard__row__draws {
+    width: 80px;
+}
+
+.leaderboard__row__draws__text {
+    color: #69a5f9
+}
+
 .leaderboard__row__losses {
     width: 80px;
 }
@@ -64,4 +72,12 @@
 
 .leaderboard__row__win_percentage {
     width: 60px;
+}
+
+.leaderboard__row__elo {
+    width: 60px;
+}
+
+.leaderboard__row__elo__text {
+    text-align: left;
 }

@@ -1,4 +1,5 @@
-import { recordGame } from "./rating/rating";
+import { recordDraw, recordLoss, recordVictory } from "./rating/playerStatistics";
+import { updateRatings } from "./rating/ratings";
 
 export type PieceColor = "red" | "yellow";
 export type CellState = PieceColor | "empty";
@@ -62,8 +63,6 @@ export class GameState {
         this.currentPlayer = "red";
         this.gameStatus = "starting";
         this.winningLine = null;
-        this.redPlayerName = null;
-        this.yellowPlayerName = null;
         this.gameStatus = "active";
     }
 
@@ -133,6 +132,20 @@ export class GameState {
         return true;
     }
 
+    private endGame(result: number) {
+        if(result == 1) {
+            recordVictory(this.redPlayerName!);
+            recordLoss(this.yellowPlayerName!);
+        } else if(result == 0) {
+            recordLoss(this.redPlayerName!);
+            recordVictory(this.yellowPlayerName!);
+        } else {
+            recordDraw(this.redPlayerName!)
+            recordDraw(this.yellowPlayerName!)
+        }
+        updateRatings(this.redPlayerName!, this.yellowPlayerName!, result);
+    }
+
     private setPiece(row: number, column: number, color: PieceColor) {
         this.board[row][column] = color;
         const victoryStatus = this.checkVictory(row, column);
@@ -140,13 +153,12 @@ export class GameState {
             const victor = victoryStatus.victor;
             this.gameStatus = victor == "red" ? "redWon" : "yellowWon";
             this.winningLine = victoryStatus.winningLine;
-            const outcome = victor == "red" ? 0 : 1;
-            recordGame(this.redPlayerName!, this.yellowPlayerName!, outcome);
-            return;
+            this.endGame(victor == "red" ? 1 : 0);
         }
         const isDraw = this.checkDraw();
         if(isDraw) {
             this.gameStatus = "draw";
+            this.endGame(0.5);
             return;
         }
     }
